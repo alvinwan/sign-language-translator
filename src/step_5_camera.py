@@ -28,7 +28,7 @@ def main():
         # preprocess data
         frame = center_crop(frame)
         frame = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
-        x = cv2.resize(x, (28, 28))
+        x = cv2.resize(frame, (28, 28))
         x = (x - mean) / std
 
         x = x.reshape(1, 1, 28, 28).astype(np.float32)
