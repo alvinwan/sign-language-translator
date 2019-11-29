@@ -17,7 +17,7 @@ class Net(nn.Module):
         self.conv3 = nn.Conv2d(6, 16, 3)
         self.fc1 = nn.Linear(16 * 5 * 5, 120)
         self.fc2 = nn.Linear(120, 48)
-        self.fc3 = nn.Linear(48, 25)
+        self.fc3 = nn.Linear(48, 24)
 
     def forward(self, x):
         x = F.relu(self.conv1(x))

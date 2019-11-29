@@ -21,16 +21,28 @@ class SignLanguageMNIST(Dataset):
     """
 
     @staticmethod
+    def get_label_mapping():
+        """
+        We map all labels to [0, 23]. This mapping from dataset labels [0, 23]
+        to letter indices [0, 25] is returned below.
+        """
+        mapping = list(range(25))
+        mapping.pop(9)
+        return mapping
+
+    @staticmethod
     def read_label_samples_from_csv(path: str):
         """
         Assumes first column in CSV is the label and subsequent 28^2 values
         are image pixel values 0-255.
         """
+        mapping = SignLanguageMNIST.get_label_mapping()
         labels, samples = [], []
         with open(path) as f:
             _ = next(f)  # skip header
             for line in csv.reader(f):
-                labels.append(int(line[0]))
+                label = int(line[0])
+                labels.append(mapping.index(label))
                 samples.append(list(map(int, line[1:])))
         return labels, samples
 
@@ -55,7 +67,7 @@ class SignLanguageMNIST(Dataset):
     def __getitem__(self, idx):
         transform = transforms.Compose([
             transforms.ToPILImage(),
-            transforms.RandomResizedCrop(28, scale=(1.0, 1.2)),
+            transforms.RandomResizedCrop(28, scale=(0.8, 1.2)),
             transforms.ToTensor(),
             transforms.Normalize(mean=self._mean, std=self._std)])
 
